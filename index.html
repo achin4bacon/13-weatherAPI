@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>IT R SOME WEATHERZ!</title>
+    <style>
+        /*format page*/
+        body {
+            color: lightblue;
+            text-align: center;
+            font-family: Courier New, Courier, monospace;
+        };
+
+
+    </style>
+    <!--require jQuery-->
+    <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="weathers"><h1>Let's Look at Some Weathers!</h1></div><Br>
+    <img src="https://media1.giphy.com/media/vHiOulNOzACIM/200.webp#1-grid1">
+    <!--create weather template-->
+    <div id="weather_template">
+        <div>
+            <!--display station name-->
+            <br><br>
+            <h1 class="stationName"></h1>
+            <!--display temperature-->
+            <h4 class="temperature"></h4>
+            <!--display wind speed-->
+            <h4 class="windSpeed"></h4>
+            <!--display clouds-->
+            <h4 class="clouds"></h4>
+        </div>
+    </div>
+
+    <div id="weather_stations"></div>
+
+    <!--begin javascript-->
+    <script>
+        //get request for weather data from API
+        $.get('http://api.geonames.org/weatherJSON?north=41&south=39&east=-104&west=-106&username=ertyseidohl', function (res) {
+            var data = res.weatherObservations;
+            //when document is ready
+            $(document).ready(function () {
+                //loop through data
+                for (var i = 0; i < data.length; i++) {
+                    //assign data at index i to a variable
+                    var weather = data[i];
+                    //clone weather template
+                    var newTemplate = $('#weather_template').children().first().clone();
+                    //find name of station
+                    //station name to uppercase to keep formatting solid
+                    newTemplate.find('.stationName').html("WHAT'S THE WEATHER FOR " + weather.stationName.toUpperCase() + '?');
+                    //find temperature at station
+                    newTemplate.find('.temperature').html("Wow! It's " + weather.temperature + " degrees outside!!!! ");
+                    //find wind at station
+                    newTemplate.find('.windSpeed').text("The wind is all " + weather.windSpeed + ' mph');
+                    //find clouds at station
+                    newTemplate.find('.clouds').text("The clouds are doing stuff like being " + weather.clouds);
+                    //append new template to weather stations for each i
+                    $('#weather_stations').append(newTemplate);
+                }
+            })
+        });
+    </script>
+</body>
+
+</html>
