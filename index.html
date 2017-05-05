@@ -11,6 +11,12 @@
             text-align: center;
             font-family: Courier New, Courier, monospace;
         };
+        #weather_template {
+            display: none;
+        }
+        #weather_template.div.goldblum {
+            display: none;
+        }
 
 
     </style>
@@ -24,8 +30,10 @@
     <!--create weather template-->
     <div id="weather_template">
         <div>
+            <span id="goldblum"></span>
             <!--display station name-->
             <br><br>
+            
             <h1 class="stationName"></h1>
             <!--display temperature-->
             <h4 class="temperature"></h4>
@@ -36,7 +44,7 @@
         </div>
     </div>
 
-    <div id="weather_stations"></div>
+    <div id="weather_stations">  </div>
 
     <!--begin javascript-->
     <script>
@@ -49,19 +57,33 @@
                 for (var i = 0; i < data.length; i++) {
                     //assign data at index i to a variable
                     var weather = data[i];
+                    //find temp in farenheit too because ytf not!?
+                    var tempInFarenheit = ((weather.temperature * 1.8) + 32);
                     //clone weather template
                     var newTemplate = $('#weather_template').children().first().clone();
+
                     //find name of station
                     //station name to uppercase to keep formatting solid
                     newTemplate.find('.stationName').html("WHAT'S THE WEATHER FOR " + weather.stationName.toUpperCase() + '?');
+                
+                    
                     //find temperature at station
-                    newTemplate.find('.temperature').html("Wow! It's " + weather.temperature + " degrees outside!!!! ");
+                    newTemplate.find('.temperature').html("Wow! It's " + weather.temperature + " (celsius) degrees outside!!!! (" + tempInFarenheit + " degrees in Farenheit)");
+
+                    //ignore this below, will play around with l8r
+                    // for (var j in weather.temperature){
+                    //     if (weather.temperature[j] > 0){
+                    //         $('#goldblum').append('<img src="https://media1.giphy.com/media/YxA2PPkXbwRTa/giphy.gif">')
+                    //     }
+                    // };
+
                     //find wind at station
                     newTemplate.find('.windSpeed').text("The wind is all " + weather.windSpeed + ' mph');
                     //find clouds at station
                     newTemplate.find('.clouds').text("The clouds are doing stuff like being " + weather.clouds);
                     //append new template to weather stations for each i
                     $('#weather_stations').append(newTemplate);
+                    
                 }
             })
         });
